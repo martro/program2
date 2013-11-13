@@ -26,7 +26,7 @@ int main()
     }
 
     wyswietl(lista);
-    clear(lista);
+    lista=clear(lista);
     wyswietl(lista);
     //wskaznik na dowolny element listy to iterator
     fflush(stdin);

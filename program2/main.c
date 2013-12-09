@@ -55,7 +55,6 @@ element* push(element *first, element *newone)
     {
         temp=temp->next;
     }
-
     temp->next=newone;
     return first;
 }

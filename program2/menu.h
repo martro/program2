@@ -16,23 +16,24 @@ int menu_glowne()
         while((getchar()) != '\n');
         podkreslenie();
         printf("WYBOR AKCJI PROGRAMU\n"
-               "1 - WYSWIETL SYGNAL ZNAJDUJACY SIE W BUFORZE\n"
-               "2 - ZALADUJ ZAPISANY SYGNAL DO BUFORA\n"
-               "3 - ZAPISZ SYGNAL ZNAJDUJACY SIE W BUFORZE\n"
+               " 1 - WCZYTAJ OBRAZ\n"
+               " 2 - WYSWIETL OBRAZY\n"
                "\n"
-               "4 - GENERUJ SYGNAL\n"
-               "5 - USTAW PARAMETRY SYGNALU\n"
-               "6 - USUN SYGNAL Z BUFORA\n"
+               "31 - FILTR PIERWSZY\n"
+               "32 - FILTR DRUGI\n"
+               "33 - FILTR TRZECI\n"
                "\n"
-               "7 - ZASZUM SYGNAL\n"
-               "8 - ODSZUM SYGNAL\n\n"
-               "9 - GENERUJ WYKRES  [Google Charts]\n\n"
-               "0 - ZAKONCZ\n\n"
+               "41 - ZMIANA ROZMIARU OBRAZU\n"
+               "42 - ROTACJA OBRAZU\n"
+               "\n"
+               " 5 - ZAPISZ\n"
+               "\n"
+               " 6 - ZAKONCZ\n\n"
 
                "WYBOR: ");
         if(scanf("%d",&wybor))   //jezeli odczytane jest liczba
         {
-            if ((wybor>=0)&&(wybor<=10))
+            if ((wybor==1)|(wybor==2)|(wybor==31)|(wybor==32)|(wybor==33)|(wybor==41)|(wybor==42)|(wybor==5)|(wybor==6))
             {
                 printf("Poprawnie odczytano. Twoj wybor to: %d\n",wybor);
                 blad_odczytu=0;
@@ -55,9 +56,9 @@ int menu_glowne()
 
     switch (wybor)
     {
-    case 0:
+    case 6:
     {
-        break;
+        return 0;
     }
 
     default:

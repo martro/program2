@@ -1,5 +1,8 @@
 # depslib dependency file v1.0
-1386177019 source:c:\users\martro\documents\github\program2\program2\main.c
+1386626817 source:c:\users\martro\documents\github\program2\program2\main.c
 	<stdio.h>
 	<stdlib.h>
+	"struktura.h"
+
+1386627439 c:\users\martro\documents\github\program2\program2\struktura.h
 

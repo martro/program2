@@ -7,9 +7,12 @@ typedef struct element
     int dane;
 } element;
 
+element *lista=NULL;
+element *temp;
 
 element *clear(element *first);
 element *push(element *first, element *newone);
+element *tymczas(int dane);
 void wyswietl(element *first);
 
 element *clear(element *first)
@@ -35,6 +38,14 @@ element* push(element *first, element *newone)
     }
     temp->next=newone;
     return first;
+}
+
+element *tymczas(int dane)
+{
+    temp=(element *)malloc(sizeof(element));
+    temp->next=NULL;
+    temp->dane=dane;
+    return temp;
 }
 
 void wyswietl(element *first)

@@ -1,9 +1,15 @@
 #ifndef MENU_H_INCLUDED
 #define MENU_H_INCLUDED
 
+void funkcja_menu_01();
 int menu_glowne();
 void podkreslenie(void);
 void zatwierdz(void);
+
+void funkcja_menu_01(dane_programu *dprog)
+{
+    wczytaj_z_pliku(dprog);
+}
 
 int menu_glowne()
 {
@@ -56,9 +62,15 @@ int menu_glowne()
 
     switch (wybor)
     {
+    case 1:
+    {
+        funkcja_menu_01(dprog);
+        break;
+    }
     case 6:
     {
         return 0;
+        break;
     }
 
     default:

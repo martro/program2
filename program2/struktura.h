@@ -21,6 +21,7 @@ dane_programu *dprog;
 element *clear(element *first);
 element *push(element *first, element *newone);
 element *tymczas(int dane);
+void pomin_komentarz(char znak, FILE *pFile);
 void wczytaj_z_pliku(dane_programu *dtab);
 void wyswietl(element *first);
 
@@ -49,6 +50,15 @@ element* push(element *first, element *newone)
     return first;
 }
 
+void pomin_komentarz(char znak,FILE *pFile )
+{
+    if (znak=='#')
+    {
+        while (fgetc(pFile)!='\n');
+        printf("\nkoment");
+    }
+}
+
 element *tymczas(int dane)
 {
     temp=(element *)malloc(sizeof(element));
@@ -62,12 +72,10 @@ void wczytaj_z_pliku(dane_programu *dtab)
 
     char nazwa[NAZWA_PLIKU],znak;
     int inttym;
+    int szer,wys,czy_param,tryb,kolormax=0;
 
     FILE * pFile;
-    /*
-    printf("assasaasasas");
-    getchar();
-    getchar();*/
+
     if ((dtab->czy_wczytany)==0)
     {
         printf("\nPODAJ NAZWE PLIKU: ");
@@ -78,6 +86,42 @@ void wczytaj_z_pliku(dane_programu *dtab)
         if (pFile!=NULL)
         {
             printf("\nOTWORZONO PLIK\n");
+
+            do
+            {
+                znak=fgetc(pFile);
+                fseek(pFile,-1,SEEK_CUR);
+
+                if (znak=='#')
+                {
+                    while (fgetc(pFile)!='\n');
+                    printf("\nkoment");
+                }
+
+                if (znak=='P')
+                {
+                    fgetc(pFile);
+                    fscanf(pFile,"%d",&tryb);
+                    printf("\ntryb: %d\n",tryb);
+                    while (fgetc(pFile)!='\n');
+                }
+                if ((znak>='0')&&(znak<='9'))
+                {
+                    fscanf(pFile,"%d %d",&szer,&wys);
+                    printf("\nszer: %d\nwys: %d\n",szer,wys);
+                    while (fgetc(pFile)!='\n');
+                    fseek(pFile,-1,SEEK_CUR);
+                    printf(" %c ",znak);
+                    fscanf(pFile,"%d ",&kolormax);
+                    printf("kolormax: %d\n",kolormax);
+                }
+    printf("\n_______________________\n");
+            }
+            while (kolormax==0);
+
+            printf("\nWysokosc: %d",wys);
+            printf("\nSzerokosc: %d",szer);
+            printf("\nKolormax: %d\n",kolormax);
             do
             {
                 znak=fgetc(pFile);

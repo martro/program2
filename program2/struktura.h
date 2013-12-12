@@ -23,7 +23,7 @@ element *clear(element *first);
 element *push(element *first, element *newone);
 element *tymczas(int dane);
 void pomin_komentarz(char znak, FILE *pFile);
-void wczytaj_z_pliku(dane_programu *dtab);
+void wczytaj_z_pliku();
 void wyswietl(element *first);
 
 element *clear(element *first)
@@ -68,15 +68,15 @@ element *tymczas(int dane)
     return temp;
 }
 
-void wczytaj_z_pliku(dane_programu *dtab)
+void wczytaj_z_pliku()
 {
     char nazwa[NAZWA_PLIKU],znak;
-    int inttym,szer=0,wys,czy_param=1,tryb,kolormax=0,licznik=0, litera_p=0,ilosc_danych=0;
+    int inttym,szer=0,wys,czy_param=1,tryb,kolormax=0,licznik=0, litera_p=0,ilosc_danych=0,error=0;
 
     FILE * pFile;
 
-    if ((dtab->czy_wczytany)==0)
-    {
+ /*   if ((dtab->czy_wczytany)==0)
+    {*/
         printf("\nPODAJ NAZWE PLIKU: ");
         scanf("%s",nazwa);
         pFile = fopen (nazwa,"r");
@@ -89,9 +89,6 @@ void wczytaj_z_pliku(dane_programu *dtab)
             do
             {
                 znak=fgetc(pFile);
-                printf("znak: %c",znak);
-                getchar();
-                getchar();
                 fseek(pFile,-1,SEEK_CUR);
 
                 if (znak=='#')
@@ -106,12 +103,15 @@ void wczytaj_z_pliku(dane_programu *dtab)
                     litera_p=1;
                 }
                 if ((znak!='#')&&(znak!='P'))
+                {
                     litera_p=2;
+                    error=1;
+                }
             }
             while((litera_p==0)&&(znak!=EOF));
 
 
-            if (litera_p==1)
+            if (error==0)
             {
 
                 do //odczyt naglowka
@@ -130,9 +130,8 @@ void wczytaj_z_pliku(dane_programu *dtab)
 
                         if (fgetc(pFile)!='\n')
                         {
-                            printf("Bledny naglowek. Zle odczytane wymiary obrazka.");
-                            getchar();
-                            getchar();
+                            error=1;
+                            printf("\nBledny naglowek. Zle odczytane wymiary obrazka.");
                             szer=-1;
                             wys=-1;
                             czy_param=0;
@@ -148,9 +147,8 @@ void wczytaj_z_pliku(dane_programu *dtab)
                         fseek(pFile,-1,SEEK_CUR);
                         if (fgetc(pFile)!='\n')
                         {
-                            printf("Bledny naglowek. Zle odczytany kolor maksymalny.");
-                            getchar();
-                            getchar();
+                            error=1;
+                            printf("\nBledny naglowek. Zle odczytany kolor maksymalny.");
                             kolormax=-1;
                             czy_param=0;
                         }
@@ -160,21 +158,11 @@ void wczytaj_z_pliku(dane_programu *dtab)
                 while (kolormax==0); //koniec odczytu naglowka
             }
             else
-                printf("Bledny naglowek. Zle odczytany parametr.");
+                printf("\nBledny naglowek. Zle odczytany parametr.");
 
-            printf("\nTryb: P%d ",tryb);
-            if (tryb==2)
-                printf(" obraz w skali odcieni szarosci");
-            if (tryb==5)
-                printf(" obraz binarny");
-            printf("\nSzerokosc: %d",szer);
-            printf("\nWysokosc:  %d",wys);
-            printf("\nKolormax:  %d\n",kolormax);
-            getchar();
-            getchar();
-
-            if ((czy_param)&&(litera_p==1))
+            if ((czy_param)&&(error==0))
             {
+                printf("\nProsze czekac. Trwa pobieranie pliku.\n");
 
                 do //pobieranie zawartosci pliku
                 {
@@ -184,46 +172,50 @@ void wczytaj_z_pliku(dane_programu *dtab)
                     if (znak=='#')
                     {
                         while (fgetc(pFile)!='\n');
-                        printf("\nkoment");
                     }
                     if ((znak!='#')&&(znak!=EOF))
                     {
-                       //fgetc(pFile);
                         if ((znak>='0')&&(znak<='9'));
                         {
                             if (fscanf(pFile,"%d ",&inttym))
                                 ilosc_danych++;
                         }
-                      //  fgetc(pFile);
-                        printf("%d ",inttym);
                         licznik++;
                         licznik=licznik%szer;
-
-                        if (licznik==0)
-                        {
-                            printf("\n");
-                        }
                     }
-                    dprog->czy_wczytany=1;
                 }
                 while (znak!=EOF); //koniec pobierania zawartosci pliku
-            }
-            else
-                printf("\nNiepoprawny naglowek. Dne nie zostaly wczytane.");
 
-            printf("\nliczba danych %d",ilosc_danych);
-            if (ilosc_danych==szer*wys)
-                printf("\n ok liczba sie zgadza");
+                if (ilosc_danych!=szer*wys)
+                {
+                    printf("\nIlosc danych nie zgodna z wymiarami obrazka.");
+                    error=1;
+                }
+
+            }
+
+            if (error)
+                printf("\nBlad odczytu. Dane nie zostaly wczytane. Plik zostanie zamkniety.");
             else
-                printf("liczna sie nie zgadza");
+            {
+                printf("Dane zaimportowane poprawnie.");
+                printf("\nTryb: P%d ",tryb);
+                if (tryb==2)
+                    printf(" obraz w skali odcieni szarosci");
+                if (tryb==5)
+                    printf(" obraz binarny");
+                printf("\nSzerokosc: %d",szer);
+                printf("\nWysokosc:  %d",wys);
+                printf("\nKolormax:  %d\n",kolormax);
+            }
             fclose (pFile);
 
         }
         else
             printf("\nBLAD ODCZYTU PLIKU. (niepoprawnie wpisana nazwa lub plik nie istnieje)\n");
-    }
+ /*   }
     else
-        printf("\nW buforze znajduje sie juz sygnal. Aby wczytac nowy usun poprzedni.\n");
+        printf("\nW buforze znajduje sie juz sygnal. Aby wczytac nowy usun poprzedni.\n");*/
 }
 
 void wyswietl(element *first)

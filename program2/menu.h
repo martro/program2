@@ -6,9 +6,9 @@ int menu_glowne();
 void podkreslenie(void);
 void zatwierdz(void);
 
-void funkcja_menu_01(dane_programu *dprog)
+void funkcja_menu_01()
 {
-    wczytaj_z_pliku(dprog);
+    wczytaj_z_pliku();
 }
 
 int menu_glowne()
@@ -64,7 +64,7 @@ int menu_glowne()
     {
     case 1:
     {
-        funkcja_menu_01(dprog);
+        funkcja_menu_01();
         break;
     }
     case 6:

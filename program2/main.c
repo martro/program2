@@ -13,8 +13,7 @@
 int main()
 {
     int dzialaj;
-    dprog = (dane_programu *)malloc(sizeof(dane_programu));
-    dprog->czy_wczytany=0;
+
     printf("Laboratorium Programowanie w C\n"
            "Program generujacy sygnaly\n"
            "Prowadzacy: mgr inz. Mariusz Ostrowski\n"
@@ -28,7 +27,6 @@ int main()
     }
     while (dzialaj);
 
-    free(dprog);
     getchar();
     return 0;
 }

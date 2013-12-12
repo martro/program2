@@ -6,27 +6,24 @@
 typedef struct element
 {
     struct element *next;
-    int dane;
+    int szer,wys,kolormax,tryb;
+    int** obraz;
 } element;
 
-typedef struct
-{
-    int czy_wczytany;
-    int *tab;
-} dane_programu;
+
 
 element *lista=NULL;
 element *temp;
-dane_programu *dprog;
 
-element *clear(element *first);
-element *push(element *first, element *newone);
-element *tymczas(int dane);
+element* clear(element *first);
+element* push(element *first, element *newone);
+element* tymczas();
+int pamiec_obraz(element* temp);
 void pomin_komentarz(char znak, FILE *pFile);
-void wczytaj_z_pliku();
+element* wczytaj_z_pliku();
 void wyswietl(element *first);
 
-element *clear(element *first)
+element* clear(element *first)
 {
     if (first==NULL)
         return NULL;
@@ -34,6 +31,15 @@ element *clear(element *first)
     clear (first->next);
     free(first);
     return NULL;
+}
+
+int pamiec_obraz(element* temp)
+{
+    int i;
+    temp->obraz=(int**)malloc(sizeof(int*)*temp->wys);
+    for (i=0; i<temp->wys; i++)
+        temp->obraz[i]=(int*)malloc(sizeof(int)*temp->szer);
+    return 0;
 }
 
 element* push(element *first, element *newone)
@@ -60,33 +66,122 @@ void pomin_komentarz(char znak,FILE *pFile )
     }
 }
 
-element *tymczas(int dane)
+element* tymczas()
 {
     temp=(element *)malloc(sizeof(element));
     temp->next=NULL;
-    temp->dane=dane;
+    temp->kolormax=0;
+    temp->szer=0;
+    temp->wys=0;
+    temp->tryb=0;
+    temp->obraz=0;
     return temp;
 }
 
-void wczytaj_z_pliku()
+element* wczytaj_z_pliku()
 {
     char nazwa[NAZWA_PLIKU],znak;
-    int inttym,szer=0,wys,czy_param=1,tryb,kolormax=0,licznik=0, litera_p=0,ilosc_danych=0,error=0;
+    int inttym,czy_param=1,x=0,y=0, litera_p=0,ilosc_danych=0,error=0,i=0;
 
     FILE * pFile;
 
- /*   if ((dtab->czy_wczytany)==0)
-    {*/
-        printf("\nPODAJ NAZWE PLIKU: ");
-        scanf("%s",nazwa);
-        pFile = fopen (nazwa,"r");
+    element* temp=tymczas();
 
 
-        if (pFile!=NULL)
+    /*   if ((dtab->czy_wczytany)==0)
+       {*/
+    printf("\nPODAJ NAZWE PLIKU: ");
+    scanf("%s",nazwa);
+    pFile = fopen (nazwa,"r");
+
+
+    if (pFile!=NULL)
+    {
+        printf("\nOTWORZONO PLIK\n");
+
+        do
         {
-            printf("\nOTWORZONO PLIK\n");
+            znak=fgetc(pFile);
+            fseek(pFile,-1,SEEK_CUR);
 
-            do
+            if (znak=='#')
+            {
+                while (fgetc(pFile)!='\n');
+            }
+            if (znak=='P')
+            {
+                fgetc(pFile);
+                fscanf(pFile,"%d",&temp->tryb);
+                printf("\n tryb: %d",temp->tryb);
+                getchar();
+                getchar();
+                while (fgetc(pFile)!='\n');
+                litera_p=1;
+            }
+            if ((znak!='#')&&(znak!='P'))
+            {
+                litera_p=2;
+                error=1;
+            }
+        }
+        while((litera_p==0)&&(znak!=EOF));
+
+
+        if (error==0)
+        {
+
+            do //odczyt naglowka
+            {
+                znak=fgetc(pFile);
+
+                if (znak=='#')
+                {
+                    while (fgetc(pFile)!='\n');
+                }
+
+                if ((znak>='0')&&(znak<='9')&&(temp->szer==0))
+                {
+                    fseek(pFile,-1,SEEK_CUR);
+                    fscanf(pFile,"%d %d",&temp->szer,&temp->wys);
+
+                    printf("\n\n\n\n szer: %d, wys %d",temp->szer,temp->wys);
+
+
+                    if (fgetc(pFile)!='\n')
+                    {
+                        error=1;
+                        printf("\nBledny naglowek. Zle odczytane wymiary obrazka.");
+                        czy_param=0;
+                    }
+                    fseek(pFile,-1,SEEK_CUR);
+
+                    while (fgetc(pFile)!='\n');
+                    fseek(pFile,-1,SEEK_CUR);
+                }
+                if ((znak>='0')&&(znak<='9')&&(temp->szer))
+                {
+                    fscanf(pFile,"%d ",&temp->kolormax);
+                    fseek(pFile,-1,SEEK_CUR);
+                    if (fgetc(pFile)!='\n')
+                    {
+                        error=1;
+                        printf("\nBledny naglowek. Zle odczytany kolor maksymalny.");
+                        temp->kolormax=-1;
+                        czy_param=0;
+                    }
+                    fseek(pFile,-1,SEEK_CUR);
+                }
+            }
+            while (temp->kolormax==0); //koniec odczytu naglowka
+        }
+        else
+            printf("\nBledny naglowek. Zle odczytany parametr.");
+
+        if ((czy_param)&&(error==0))
+        {
+            printf("\nProsze czekac. Trwa pobieranie pliku.\n");
+            pamiec_obraz(temp);
+            do //pobieranie zawartosci pliku
             {
                 znak=fgetc(pFile);
                 fseek(pFile,-1,SEEK_CUR);
@@ -95,127 +190,66 @@ void wczytaj_z_pliku()
                 {
                     while (fgetc(pFile)!='\n');
                 }
-                if (znak=='P')
+                if ((znak!='#')&&(znak!=EOF))
                 {
-                    fgetc(pFile);
-                    fscanf(pFile,"%d",&tryb);
-                    while (fgetc(pFile)!='\n');
-                    litera_p=1;
-                }
-                if ((znak!='#')&&(znak!='P'))
-                {
-                    litera_p=2;
-                    error=1;
-                }
-            }
-            while((litera_p==0)&&(znak!=EOF));
-
-
-            if (error==0)
-            {
-
-                do //odczyt naglowka
-                {
-                    znak=fgetc(pFile);
-                    fseek(pFile,-1,SEEK_CUR);
-
-                    if (znak=='#')
+                    if ((znak>='0')&&(znak<='9'));
                     {
-                        while (fgetc(pFile)!='\n');
-                    }
-
-                    if ((znak>='0')&&(znak<='9')&&(szer==0))
-                    {
-                        fscanf(pFile,"%d %d",&szer,&wys);
-
-                        if (fgetc(pFile)!='\n')
+                        if (fscanf(pFile,"%d ",&inttym))
                         {
-                            error=1;
-                            printf("\nBledny naglowek. Zle odczytane wymiary obrazka.");
-                            szer=-1;
-                            wys=-1;
-                            czy_param=0;
+                            ilosc_danych++;
                         }
-                        fseek(pFile,-1,SEEK_CUR);
-
-                        while (fgetc(pFile)!='\n');
-                        fseek(pFile,-1,SEEK_CUR);
-                    }
-                    if ((znak>='0')&&(znak<='9')&&(szer))
-                    {
-                        fscanf(pFile,"%d ",&kolormax);
-                        fseek(pFile,-1,SEEK_CUR);
-                        if (fgetc(pFile)!='\n')
+                        temp->obraz[y][x]=inttym;
+                        x++;
+                        if (x==temp->szer)
                         {
-                            error=1;
-                            printf("\nBledny naglowek. Zle odczytany kolor maksymalny.");
-                            kolormax=-1;
-                            czy_param=0;
+                            x=0;
+                            y++;
                         }
-                        fseek(pFile,-1,SEEK_CUR);
                     }
-                }
-                while (kolormax==0); //koniec odczytu naglowka
-            }
-            else
-                printf("\nBledny naglowek. Zle odczytany parametr.");
 
-            if ((czy_param)&&(error==0))
+                }
+            }
+            while (znak!=EOF); //koniec pobierania zawartosci pliku
+
+            if (ilosc_danych!=temp->szer*temp->wys)
             {
-                printf("\nProsze czekac. Trwa pobieranie pliku.\n");
-
-                do //pobieranie zawartosci pliku
-                {
-                    znak=fgetc(pFile);
-                    fseek(pFile,-1,SEEK_CUR);
-
-                    if (znak=='#')
-                    {
-                        while (fgetc(pFile)!='\n');
-                    }
-                    if ((znak!='#')&&(znak!=EOF))
-                    {
-                        if ((znak>='0')&&(znak<='9'));
-                        {
-                            if (fscanf(pFile,"%d ",&inttym))
-                                ilosc_danych++;
-                        }
-                        licznik++;
-                        licznik=licznik%szer;
-                    }
-                }
-                while (znak!=EOF); //koniec pobierania zawartosci pliku
-
-                if (ilosc_danych!=szer*wys)
-                {
-                    printf("\nIlosc danych nie zgodna z wymiarami obrazka.");
-                    error=1;
-                }
-
+                printf("\nIlosc danych nie zgodna z wymiarami obrazka.");
+                error=1;
             }
-
-            if (error)
-                printf("\nBlad odczytu. Dane nie zostaly wczytane. Plik zostanie zamkniety.");
-            else
-            {
-                printf("Dane zaimportowane poprawnie.");
-                printf("\nTryb: P%d ",tryb);
-                if (tryb==2)
-                    printf(" obraz w skali odcieni szarosci");
-                if (tryb==5)
-                    printf(" obraz binarny");
-                printf("\nSzerokosc: %d",szer);
-                printf("\nWysokosc:  %d",wys);
-                printf("\nKolormax:  %d\n",kolormax);
-            }
-            fclose (pFile);
 
         }
+
+        if (error)
+        {
+            printf("\nBlad odczytu. Dane nie zostaly wczytane. Plik zostanie zamkniety.");
+            temp=NULL;
+        }
         else
-            printf("\nBLAD ODCZYTU PLIKU. (niepoprawnie wpisana nazwa lub plik nie istnieje)\n");
- /*   }
+        {
+            printf("Dane zaimportowane poprawnie.");
+            printf("\nTryb: P%d ",temp->tryb);
+            if (temp->tryb==2)
+                printf(" obraz w skali odcieni szarosci");
+            if (temp->tryb==5)
+                printf(" obraz binarny");
+            printf("\nSzerokosc: %d",temp->szer);
+            printf("\nWysokosc:  %d",temp->wys);
+            printf("\nKolormax:  %d\n",temp->kolormax);
+        }
+        fclose (pFile);
+
+    }
     else
-        printf("\nW buforze znajduje sie juz sygnal. Aby wczytac nowy usun poprzedni.\n");*/
+        printf("\nBLAD ODCZYTU PLIKU. (niepoprawnie wpisana nazwa lub plik nie istnieje)\n");
+    /*   }
+       else
+           printf("\nW buforze znajduje sie juz sygnal. Aby wczytac nowy usun poprzedni.\n");*/
+
+    for(i = 0; i < temp->wys; i++)
+        free(temp->obraz[i]);
+    free(temp->obraz);
+    free(temp);
+    return temp;
 }
 
 void wyswietl(element *first)
@@ -229,7 +263,7 @@ void wyswietl(element *first)
     {
         do
         {
-            printf("[%d]->",first->dane);
+//            printf("[%d]->",first->dane);
             first=first->next;
         }
         while(first!=NULL);

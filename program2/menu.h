@@ -11,6 +11,12 @@ void funkcja_menu_01()
     wczytaj_z_pliku();
 }
 
+void funkcja_menu_02(element* first, element* newone)
+{
+    /*element* temp=malloc(sizeof(element));
+    temp=(element *)malloc(sizeof(element));*/
+}
+
 int menu_glowne()
 {
     int wybor;

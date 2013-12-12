@@ -175,6 +175,7 @@ void wczytaj_z_pliku(dane_programu *dtab)
 
             if ((czy_param)&&(litera_p==1))
             {
+
                 do //pobieranie zawartosci pliku
                 {
                     znak=fgetc(pFile);
@@ -187,14 +188,21 @@ void wczytaj_z_pliku(dane_programu *dtab)
                     }
                     if ((znak!='#')&&(znak!=EOF))
                     {
-                        if (licznik==0)
-                            printf("\n");
-                        fgetc(pFile);
-                        if (fscanf(pFile,"%d",&inttym))
-                            ilosc_danych++;
-                        printf("%d |",inttym);
+                       //fgetc(pFile);
+                        if ((znak>='0')&&(znak<='9'));
+                        {
+                            if (fscanf(pFile,"%d ",&inttym))
+                                ilosc_danych++;
+                        }
+                      //  fgetc(pFile);
+                        printf("%d ",inttym);
                         licznik++;
                         licznik=licznik%szer;
+
+                        if (licznik==0)
+                        {
+                            printf("\n");
+                        }
                     }
                     dprog->czy_wczytany=1;
                 }
@@ -206,6 +214,8 @@ void wczytaj_z_pliku(dane_programu *dtab)
             printf("\nliczba danych %d",ilosc_danych);
             if (ilosc_danych==szer*wys)
                 printf("\n ok liczba sie zgadza");
+            else
+                printf("liczna sie nie zgadza");
             fclose (pFile);
 
         }

@@ -71,7 +71,7 @@ element *tymczas(int dane)
 void wczytaj_z_pliku(dane_programu *dtab)
 {
     char nazwa[NAZWA_PLIKU],znak;
-    int inttym,szer=0,wys,czy_param=1,tryb,kolormax=0,licznik=0;
+    int inttym,szer=0,wys,czy_param=1,tryb,kolormax=0,licznik=0, litera_p=0,ilosc_danych=0;
 
     FILE * pFile;
 
@@ -86,56 +86,81 @@ void wczytaj_z_pliku(dane_programu *dtab)
         {
             printf("\nOTWORZONO PLIK\n");
 
-            do //odczyt naglowka
+            do
             {
                 znak=fgetc(pFile);
+                printf("znak: %c",znak);
+                getchar();
+                getchar();
                 fseek(pFile,-1,SEEK_CUR);
 
                 if (znak=='#')
                 {
                     while (fgetc(pFile)!='\n');
                 }
-
                 if (znak=='P')
                 {
                     fgetc(pFile);
                     fscanf(pFile,"%d",&tryb);
                     while (fgetc(pFile)!='\n');
+                    litera_p=1;
                 }
-                if ((znak>='0')&&(znak<='9')&&(szer==0))
-                {
-                    fscanf(pFile,"%d %d",&szer,&wys);
-
-                    if (fgetc(pFile)!='\n')
-                    {
-                        printf("bledny naglowek");
-                        getchar();
-                        getchar();
-                        szer=-1;
-                        wys=-1;
-                        czy_param=0;
-                    }
-                    fseek(pFile,-1,SEEK_CUR);
-
-                    while (fgetc(pFile)!='\n');
-                    fseek(pFile,-1,SEEK_CUR);
-                }
-                if ((znak>='0')&&(znak<='9')&&(szer))
-                {
-                    fscanf(pFile,"%d ",&kolormax);
-                    fseek(pFile,-1,SEEK_CUR);
-                    if (fgetc(pFile)!='\n')
-                    {
-                        printf("bledny naglowek");
-                        getchar();
-                        getchar();
-                        kolormax=-1;
-                        czy_param=0;
-                    }
-                    fseek(pFile,-1,SEEK_CUR);
-                }
+                if ((znak!='#')&&(znak!='P'))
+                    litera_p=2;
             }
-            while (kolormax==0); //koniec odczytu naglowka
+            while((litera_p==0)&&(znak!=EOF));
+
+
+            if (litera_p==1)
+            {
+
+                do //odczyt naglowka
+                {
+                    znak=fgetc(pFile);
+                    fseek(pFile,-1,SEEK_CUR);
+
+                    if (znak=='#')
+                    {
+                        while (fgetc(pFile)!='\n');
+                    }
+
+                    if ((znak>='0')&&(znak<='9')&&(szer==0))
+                    {
+                        fscanf(pFile,"%d %d",&szer,&wys);
+
+                        if (fgetc(pFile)!='\n')
+                        {
+                            printf("Bledny naglowek. Zle odczytane wymiary obrazka.");
+                            getchar();
+                            getchar();
+                            szer=-1;
+                            wys=-1;
+                            czy_param=0;
+                        }
+                        fseek(pFile,-1,SEEK_CUR);
+
+                        while (fgetc(pFile)!='\n');
+                        fseek(pFile,-1,SEEK_CUR);
+                    }
+                    if ((znak>='0')&&(znak<='9')&&(szer))
+                    {
+                        fscanf(pFile,"%d ",&kolormax);
+                        fseek(pFile,-1,SEEK_CUR);
+                        if (fgetc(pFile)!='\n')
+                        {
+                            printf("Bledny naglowek. Zle odczytany kolor maksymalny.");
+                            getchar();
+                            getchar();
+                            kolormax=-1;
+                            czy_param=0;
+                        }
+                        fseek(pFile,-1,SEEK_CUR);
+                    }
+                }
+                while (kolormax==0); //koniec odczytu naglowka
+            }
+            else
+                printf("Bledny naglowek. Zle odczytany parametr.");
 
             printf("\nTryb: P%d ",tryb);
             if (tryb==2)
@@ -148,7 +173,7 @@ void wczytaj_z_pliku(dane_programu *dtab)
             getchar();
             getchar();
 
-            if (czy_param)
+            if ((czy_param)&&(litera_p==1))
             {
                 do //pobieranie zawartosci pliku
                 {
@@ -160,13 +185,14 @@ void wczytaj_z_pliku(dane_programu *dtab)
                         while (fgetc(pFile)!='\n');
                         printf("\nkoment");
                     }
-                    if (znak!='#')
+                    if ((znak!='#')&&(znak!=EOF))
                     {
                         if (licznik==0)
                             printf("\n");
                         fgetc(pFile);
-                        fscanf(pFile,"%d",&inttym);
-                        printf("%d ",inttym);
+                        if (fscanf(pFile,"%d",&inttym))
+                            ilosc_danych++;
+                        printf("%d |",inttym);
                         licznik++;
                         licznik=licznik%szer;
                     }
@@ -177,6 +203,9 @@ void wczytaj_z_pliku(dane_programu *dtab)
             else
                 printf("\nNiepoprawny naglowek. Dne nie zostaly wczytane.");
 
+            printf("\nliczba danych %d",ilosc_danych);
+            if (ilosc_danych==szer*wys)
+                printf("\n ok liczba sie zgadza");
             fclose (pFile);
 
         }

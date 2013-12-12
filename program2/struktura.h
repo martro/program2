@@ -72,7 +72,7 @@ void wczytaj_z_pliku(dane_programu *dtab)
 
     char nazwa[NAZWA_PLIKU],znak;
     int inttym;
-    int szer,wys,czy_param,tryb,kolormax=0;
+    int szer=0,wys,czy_param,tryb,kolormax=0,licznik=0;
 
     FILE * pFile;
 
@@ -105,12 +105,15 @@ void wczytaj_z_pliku(dane_programu *dtab)
                     printf("\ntryb: %d\n",tryb);
                     while (fgetc(pFile)!='\n');
                 }
-                if ((znak>='0')&&(znak<='9'))
+                if ((znak>='0')&&(znak<='9')&&(szer==0))
                 {
                     fscanf(pFile,"%d %d",&szer,&wys);
                     printf("\nszer: %d\nwys: %d\n",szer,wys);
                     while (fgetc(pFile)!='\n');
                     fseek(pFile,-1,SEEK_CUR);
+                }
+                if ((znak>='0')&&(znak<='9')&&(szer))
+                {
                     printf(" %c ",znak);
                     fscanf(pFile,"%d ",&kolormax);
                     printf("kolormax: %d\n",kolormax);
@@ -122,6 +125,8 @@ void wczytaj_z_pliku(dane_programu *dtab)
             printf("\nWysokosc: %d",wys);
             printf("\nSzerokosc: %d",szer);
             printf("\nKolormax: %d\n",kolormax);
+            getchar();
+            getchar();
             do
             {
                 znak=fgetc(pFile);
@@ -135,10 +140,13 @@ void wczytaj_z_pliku(dane_programu *dtab)
                 }
                 if (znak!='#')
                 {
-                    printf("\n");
+                    if (licznik==0)
+                        printf("\n");
                     fgetc(pFile);
                     fscanf(pFile,"%d",&inttym);
-                    printf("%d",inttym);
+                    printf("%d ",inttym);
+                    licznik++;
+                    licznik=licznik%szer;
                 }
 
 

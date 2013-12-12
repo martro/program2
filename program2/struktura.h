@@ -12,6 +12,7 @@ typedef struct element
 typedef struct
 {
     int czy_wczytany;
+    int *tab;
 } dane_programu;
 
 element *lista=NULL;
@@ -70,7 +71,7 @@ element *tymczas(int dane)
 void wczytaj_z_pliku(dane_programu *dtab)
 {
     char nazwa[NAZWA_PLIKU],znak;
-    int inttym,szer=0,wys,czy_param,tryb,kolormax=0,licznik=0;
+    int inttym,szer=0,wys,czy_param=1,tryb,kolormax=0,licznik=0;
 
     FILE * pFile;
 
@@ -104,11 +105,35 @@ void wczytaj_z_pliku(dane_programu *dtab)
                 if ((znak>='0')&&(znak<='9')&&(szer==0))
                 {
                     fscanf(pFile,"%d %d",&szer,&wys);
+
+                    if (fgetc(pFile)!='\n')
+                    {
+                        printf("bledny naglowek");
+                        getchar();
+                        getchar();
+                        szer=-1;
+                        wys=-1;
+                        czy_param=0;
+                    }
+                    fseek(pFile,-1,SEEK_CUR);
+
                     while (fgetc(pFile)!='\n');
                     fseek(pFile,-1,SEEK_CUR);
                 }
                 if ((znak>='0')&&(znak<='9')&&(szer))
+                {
                     fscanf(pFile,"%d ",&kolormax);
+                    fseek(pFile,-1,SEEK_CUR);
+                    if (fgetc(pFile)!='\n')
+                    {
+                        printf("bledny naglowek");
+                        getchar();
+                        getchar();
+                        kolormax=-1;
+                        czy_param=0;
+                    }
+                    fseek(pFile,-1,SEEK_CUR);
+                }
             }
             while (kolormax==0); //koniec odczytu naglowka
 
@@ -122,31 +147,38 @@ void wczytaj_z_pliku(dane_programu *dtab)
             printf("\nKolormax:  %d\n",kolormax);
             getchar();
             getchar();
-            do //pobieranie zawartosci pliku
-            {
-                znak=fgetc(pFile);
-                fseek(pFile,-1,SEEK_CUR);
 
-                if (znak=='#')
+            if (czy_param)
+            {
+                do //pobieranie zawartosci pliku
                 {
-                    while (fgetc(pFile)!='\n');
-                    printf("\nkoment");
+                    znak=fgetc(pFile);
+                    fseek(pFile,-1,SEEK_CUR);
+
+                    if (znak=='#')
+                    {
+                        while (fgetc(pFile)!='\n');
+                        printf("\nkoment");
+                    }
+                    if (znak!='#')
+                    {
+                        if (licznik==0)
+                            printf("\n");
+                        fgetc(pFile);
+                        fscanf(pFile,"%d",&inttym);
+                        printf("%d ",inttym);
+                        licznik++;
+                        licznik=licznik%szer;
+                    }
+                    dprog->czy_wczytany=1;
                 }
-                if (znak!='#')
-                {
-                    if (licznik==0)
-                        printf("\n");
-                    fgetc(pFile);
-                    fscanf(pFile,"%d",&inttym);
-                    printf("%d ",inttym);
-                    licznik++;
-                    licznik=licznik%szer;
-                }
+                while (znak!=EOF); //koniec pobierania zawartosci pliku
             }
-            while (znak!=EOF); //koniec pobierania zawartosci pliku
+            else
+                printf("\nNiepoprawny naglowek. Dne nie zostaly wczytane.");
 
             fclose (pFile);
-            dprog->czy_wczytany=1;
+
         }
         else
             printf("\nBLAD ODCZYTU PLIKU. (niepoprawnie wpisana nazwa lub plik nie istnieje)\n");

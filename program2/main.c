@@ -28,7 +28,6 @@ int main()
     }
     while (dzialaj);
 
-
     free(dprog);
     getchar();
     return 0;

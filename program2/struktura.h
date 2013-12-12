@@ -69,10 +69,8 @@ element *tymczas(int dane)
 
 void wczytaj_z_pliku(dane_programu *dtab)
 {
-
     char nazwa[NAZWA_PLIKU],znak;
-    int inttym;
-    int szer=0,wys,czy_param,tryb,kolormax=0,licznik=0;
+    int inttym,szer=0,wys,czy_param,tryb,kolormax=0,licznik=0;
 
     FILE * pFile;
 
@@ -87,7 +85,7 @@ void wczytaj_z_pliku(dane_programu *dtab)
         {
             printf("\nOTWORZONO PLIK\n");
 
-            do
+            do //odczyt naglowka
             {
                 znak=fgetc(pFile);
                 fseek(pFile,-1,SEEK_CUR);
@@ -95,42 +93,38 @@ void wczytaj_z_pliku(dane_programu *dtab)
                 if (znak=='#')
                 {
                     while (fgetc(pFile)!='\n');
-                    printf("\nkoment");
                 }
 
                 if (znak=='P')
                 {
                     fgetc(pFile);
                     fscanf(pFile,"%d",&tryb);
-                    printf("\ntryb: %d\n",tryb);
                     while (fgetc(pFile)!='\n');
                 }
                 if ((znak>='0')&&(znak<='9')&&(szer==0))
                 {
                     fscanf(pFile,"%d %d",&szer,&wys);
-                    printf("\nszer: %d\nwys: %d\n",szer,wys);
                     while (fgetc(pFile)!='\n');
                     fseek(pFile,-1,SEEK_CUR);
                 }
                 if ((znak>='0')&&(znak<='9')&&(szer))
-                {
-                    printf(" %c ",znak);
                     fscanf(pFile,"%d ",&kolormax);
-                    printf("kolormax: %d\n",kolormax);
-                }
-    printf("\n_______________________\n");
             }
-            while (kolormax==0);
+            while (kolormax==0); //koniec odczytu naglowka
 
-            printf("\nWysokosc: %d",wys);
+            printf("\nTryb: P%d ",tryb);
+            if (tryb==2)
+                printf(" obraz w skali odcieni szarosci");
+            if (tryb==5)
+                printf(" obraz binarny");
             printf("\nSzerokosc: %d",szer);
-            printf("\nKolormax: %d\n",kolormax);
+            printf("\nWysokosc:  %d",wys);
+            printf("\nKolormax:  %d\n",kolormax);
             getchar();
             getchar();
-            do
+            do //pobieranie zawartosci pliku
             {
                 znak=fgetc(pFile);
-
                 fseek(pFile,-1,SEEK_CUR);
 
                 if (znak=='#')
@@ -148,11 +142,8 @@ void wczytaj_z_pliku(dane_programu *dtab)
                     licznik++;
                     licznik=licznik%szer;
                 }
-
-
-
             }
-            while (znak!=EOF);
+            while (znak!=EOF); //koniec pobierania zawartosci pliku
 
             fclose (pFile);
             dprog->czy_wczytany=1;
@@ -162,8 +153,6 @@ void wczytaj_z_pliku(dane_programu *dtab)
     }
     else
         printf("\nW buforze znajduje sie juz sygnal. Aby wczytac nowy usun poprzedni.\n");
-
-
 }
 
 void wyswietl(element *first)

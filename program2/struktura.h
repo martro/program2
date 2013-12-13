@@ -5,6 +5,7 @@
 
 typedef struct element
 {
+    char* nazwa_pliku;;
     struct element *next;
     int szer,wys,kolormax,tryb;
     int** obraz;
@@ -18,10 +19,11 @@ element *temp;
 element* clear(element *first);
 element* push(element *first, element *newone);
 element* tymczas();
-int pamiec_obraz(element* temp);
+int pamiec_strukt(element* temp);
 void pomin_komentarz(char znak, FILE *pFile);
 element* wczytaj_z_pliku();
 void wyswietl(element *first);
+void zapisz_bufor();
 
 element* clear(element *first)
 {
@@ -34,16 +36,18 @@ element* clear(element *first)
     for(i = 0; i < first->wys; i++)
     free(first->obraz[i]);
     free(first->obraz);
+    free(first->nazwa_pliku);
     free(first);
     return NULL;
 }
 
-int pamiec_obraz(element* temp)
+int pamiec_strukt(element* temp)
 {
     int i;
     temp->obraz=(int**)malloc(sizeof(int*)*temp->wys);
     for (i=0; i<temp->wys; i++)
         temp->obraz[i]=(int*)malloc(sizeof(int)*temp->szer);
+    temp->nazwa_pliku=(char*)malloc(sizeof(char)*NAZWA_PLIKU);
     return 0;
 }
 
@@ -85,9 +89,11 @@ element* tymczas()
 
 element* wczytaj_z_pliku()
 {
-    char nazwa[NAZWA_PLIKU],znak;
+    char znak;
+    char* nazwa;
     int inttym,czy_param=1,x=0,y=0, litera_p=0,ilosc_danych=0,error=0,i=0;
 
+    nazwa=(char*)malloc(sizeof(char)*NAZWA_PLIKU);
     FILE * pFile;
     element* temp=tymczas();
 
@@ -179,7 +185,7 @@ element* wczytaj_z_pliku()
         if ((czy_param)&&(error==0))
         {
             printf("\nProsze czekac. Trwa pobieranie pliku.\n");
-            pamiec_obraz(temp);
+            pamiec_strukt(temp);
             do //pobieranie zawartosci pliku
             {
                 do
@@ -236,6 +242,8 @@ element* wczytaj_z_pliku()
             printf("\nWysokosc:  %d",temp->wys);
             printf("\nKolormax:  %d\n",temp->kolormax);
             temp->next=0;
+            temp->nazwa_pliku=nazwa;
+            printf("nazwa pliku: %s",temp->nazwa_pliku);
             lista=push(lista,temp);
         }
         fclose (pFile);
@@ -246,7 +254,7 @@ element* wczytaj_z_pliku()
     /*   }
        else
            printf("\nW buforze znajduje sie juz sygnal. Aby wczytac nowy usun poprzedni.\n");*/
-
+    free(nazwa);
     return temp;
 }
 
@@ -269,6 +277,49 @@ void wyswietl(element *first)
         }
         while(first!=NULL);
         printf("NULL");
+    }
+}
+void zapisz_bufor()
+{
+    int i,j;
+    char wybor;
+    char* nazwa;
+    FILE * pFile;
+    nazwa=(char*)malloc(sizeof(char)*NAZWA_PLIKU);
+
+    if (1)
+    {
+        printf("\nZapis pliku %s",temp->nazwa_pliku);
+        printf("\nWybierz akcje:"
+               "\n1 - nadpisz"
+               "\n2 - nowa nazwa");
+               wybor=getchar();
+               if (wybor==1)
+                nazwa=temp->nazwa_pliku; else
+                {
+                    printf("\nPODAJ NAZWE PLIKU (rozszerzenie: .pgm): ");
+                    scanf("%s",nazwa);
+                }
+
+        printf("\nZapisywanie pod nazwa: %s",nazwa);
+        pFile = fopen (nazwa,"w");
+
+        if (pFile!=NULL)
+        {
+            fprintf(pFile,"P%d\n",temp->tryb);
+            fprintf(pFile,"%d %d\n", temp->szer, temp->wys);
+            fprintf(pFile,"%d\n",temp->kolormax);
+
+
+            for (j=0; j<temp->wys; j++)
+            {
+                for (i=0;i<temp->szer;i++)
+                    fprintf(pFile,"%d ",temp->obraz[j][i]);
+
+            }
+            free(nazwa);
+            fclose (pFile);
+        }
     }
 }
 

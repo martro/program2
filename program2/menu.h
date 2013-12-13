@@ -20,6 +20,7 @@ void funkcja_menu_02()
 
 void funkcja_menu_05()
 {
+    zapisz_bufor();
     lista=clear(lista);
 }
 

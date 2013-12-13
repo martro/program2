@@ -1,11 +1,11 @@
 # depslib dependency file v1.0
-1386851997 source:c:\users\martro\documents\github\program2\program2\main.c
+1386867045 source:c:\users\martro\documents\github\program2\program2\main.c
 	<stdio.h>
 	<stdlib.h>
 	"struktura.h"
 	"menu.h"
 
-1386861886 c:\users\martro\documents\github\program2\program2\struktura.h
+1386903422 c:\users\martro\documents\github\program2\program2\struktura.h
 
-1386690635 c:\users\martro\documents\github\program2\program2\menu.h
+1386866991 c:\users\martro\documents\github\program2\program2\menu.h
 

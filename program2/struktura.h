@@ -18,10 +18,11 @@ element *lista=NULL;
 element *temp;
 
 element* clear(element *first);
-element* push(element *first, element *newone);
 element* tymczas();
 int pamiec_strukt(element* temp);
 void pomin_komentarz(char znak, FILE *pFile);
+element* pozycja(int poz,element* first);
+element* push(element *first, element *newone);
 element* wczytaj_z_pliku();
 int rozmiar(element* first);
 void wyswietl(element *first);
@@ -37,7 +38,7 @@ element* clear(element *first)
     clear (first->next);
 
     for(i = 0; i < first->wys; i++)
-    free(first->obraz[i]);
+        free(first->obraz[i]);
     free(first->obraz);
     free(first->nazwa_pliku);
     free(first);
@@ -54,6 +55,38 @@ int pamiec_strukt(element* temp)
     return 0;
 }
 
+void pomin_komentarz(char znak,FILE *pFile )
+{
+    if (znak=='#')
+    {
+        while (fgetc(pFile)!='\n');
+        printf("\nkoment");
+    }
+}
+
+element* pozycja(int poz, element* first)
+{
+    if (poz>=rozmiar(first))
+    {
+        printf("Podana liczba jest za duza.\n");
+        return NULL;
+    }
+    else if(poz<0)
+    {
+        printf("Blad. Pozycja musi byc dodatnia.\n");
+        return NULL;
+    }
+    do
+    {
+        first = first->next;
+        poz--;
+    }
+    while(poz>0);
+
+    printf("Nazwa pliku: %s\n", first->nazwa_pliku);
+    return first;
+}
+
 element* push(element *first, element *newone)
 {
     element *temp=first;
@@ -67,15 +100,6 @@ element* push(element *first, element *newone)
     }
     temp->next=newone;
     return first;
-}
-
-void pomin_komentarz(char znak,FILE *pFile )
-{
-    if (znak=='#')
-    {
-        while (fgetc(pFile)!='\n');
-        printf("\nkoment");
-    }
 }
 
 element* tymczas()
@@ -122,9 +146,6 @@ element* wczytaj_z_pliku()
             {
                 fgetc(pFile);
                 fscanf(pFile,"%d",&temp->tryb);
-                printf("\n tryb: %d",temp->tryb);
-                getchar();
-                getchar();
                 while (fgetc(pFile)!='\n');
                 litera_p=1;
             }
@@ -155,13 +176,7 @@ element* wczytaj_z_pliku()
 
                 if ((znak>='0')&&(znak<='9')&&(temp->szer==0))
                 {
-                    printf("\nznak: %c\n",znak);
-                    getchar();
-                    getchar();
                     fscanf(pFile,"%d %d",&temp->szer,&temp->wys);
-
-                    temp->szer=640;
-                    getchar();
 
                     if (fgetc(pFile)!='\n')
                     {
@@ -177,8 +192,6 @@ element* wczytaj_z_pliku()
                 if ((znak>='0')&&(znak<='9')&&(temp->szer))
                 {
                     fscanf(pFile,"%d ",&temp->kolormax);
-                    printf("\n szer: %d, wys %d",temp->szer,temp->wys);
-                    printf("\n kolorek %d",temp->kolormax);
                     fseek(pFile,-1,SEEK_CUR);
                 }
             }
@@ -232,7 +245,7 @@ element* wczytaj_z_pliku()
         {
             printf("\nBlad odczytu. Dane nie zostaly wczytane. Plik zostanie zamkniety.");
             for(i = 0; i < temp->wys; i++)
-            free(temp->obraz[i]);
+                free(temp->obraz[i]);
             free(temp->obraz);
         }
         else
@@ -240,9 +253,9 @@ element* wczytaj_z_pliku()
             printf("Dane zaimportowane poprawnie.");
             printf("\nTryb: P%d ",temp->tryb);
             if (temp->tryb==2)
-                printf(" obraz w skali odcieni szarosci");
+                printf(" obraz w skali odcieni szarosci\n");
             if (temp->tryb==5)
-                printf(" obraz binarny");
+                printf(" obraz binarny\n");
             printf("\nSzerokosc: %d",temp->szer);
             printf("\nWysokosc:  %d",temp->wys);
             printf("\nKolormax:  %d\n",temp->kolormax);
@@ -307,14 +320,17 @@ void zapisz_bufor(element* temp)
         printf("\nZapis pliku %s",temp->nazwa_pliku);
         printf("\nWybierz akcje:"
                "\n1 - nadpisz"
-               "\n2 - nowa nazwa");
-               wybor=getchar();
-               if (wybor==1)
-                nazwa=temp->nazwa_pliku; else
-                {
-                    printf("\nPODAJ NAZWE PLIKU (rozszerzenie: .pgm): ");
-                    scanf("%s",nazwa);
-                }
+               "\n2 - nowa nazwa\n");
+        while((getchar()) != '\n');
+        wybor=getchar();
+        printf("\nwybor: %d\n",wybor);
+        if (wybor=='1')
+            nazwa=temp->nazwa_pliku;
+        else
+        {
+            printf("\nPODAJ NAZWE PLIKU (rozszerzenie: .pgm): ");
+            scanf("%s",nazwa);
+        }
 
         printf("\nZapisywanie pod nazwa: %s",nazwa);
         pFile = fopen (nazwa,"w");
@@ -328,12 +344,12 @@ void zapisz_bufor(element* temp)
 
             for (j=0; j<temp->wys; j++)
             {
-                for (i=0;i<temp->szer;i++)
+                for (i=0; i<temp->szer; i++)
                     fprintf(pFile,"%d ",temp->obraz[j][i]);
-
             }
             free(nazwa);
             fclose (pFile);
+            printf("\nZAPISANO\n");
         }
     }
 }
@@ -341,7 +357,7 @@ element* zapisz_liste(element* first)
 {
     int i;
 
-    for(i=0;i<rozmiar(lista);i++)
+    for(i=0; i<rozmiar(lista); i++)
     {
         zapisz_bufor(first);
         first=first->next;

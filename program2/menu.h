@@ -16,6 +16,10 @@ void funkcja_menu_01()
 
 void funkcja_menu_02()
 {
+    pozycja(3,lista);
+    printf("\n\n");
+    getchar();
+    getchar();
     wyswietl(lista);
 }
 

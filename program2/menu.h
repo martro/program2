@@ -12,8 +12,6 @@ void funkcja_menu_01()
 {
     temp=wczytaj_z_pliku();
     lista=push(lista,temp);
-    printf("\nnazwa pliku: %s",lista->nazwa_pliku);
-    printf("\nnazwa pliku(test): %s",lista->nazwa_pliku);
 }
 
 void funkcja_menu_02()
@@ -23,7 +21,7 @@ void funkcja_menu_02()
 
 void funkcja_menu_05()
 {
-    zapisz_bufor();
+    zapisz_liste(lista);
     lista=clear(lista);
 }
 

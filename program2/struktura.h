@@ -8,6 +8,7 @@ typedef struct element
     char* nazwa_pliku;;
     struct element *next;
     int szer,wys,kolormax,tryb;
+    int czy_zmieniony;
     int** obraz;
 } element;
 
@@ -22,8 +23,10 @@ element* tymczas();
 int pamiec_strukt(element* temp);
 void pomin_komentarz(char znak, FILE *pFile);
 element* wczytaj_z_pliku();
+int rozmiar(element* first);
 void wyswietl(element *first);
 void zapisz_bufor();
+element* zapisz_liste(element* first);
 
 element* clear(element *first)
 {
@@ -85,6 +88,7 @@ element* tymczas()
     temp->tryb=0;
     temp->obraz=0;
     temp->nazwa_pliku=0;
+    temp->czy_zmieniony=0;
     return temp;
 }
 
@@ -257,18 +261,29 @@ element* wczytaj_z_pliku()
     return temp;
 }
 
+int rozmiar(element* first)
+{
+    int i=0;
+    while(first!=NULL)
+    {
+        i++;
+        first = first->next;
+    }
+    return i;
+}
+
 void wyswietl(element *first)
 {
     int i=0;
     if (first==NULL)
     {
-        printf("Lista jest pusta.");
+        printf("\nLista jest pusta.");
     }
 
     else
     {
         printf("Nr\tnazwa\n");
-        printf("nazwa pliku: %s",lista->nazwa_pliku);
+        printf("________________\n");
         do
         {
             i++;
@@ -279,7 +294,7 @@ void wyswietl(element *first)
         printf("NULL");
     }
 }
-void zapisz_bufor()
+void zapisz_bufor(element* temp)
 {
     int i,j;
     char wybor;
@@ -322,5 +337,18 @@ void zapisz_bufor()
         }
     }
 }
+element* zapisz_liste(element* first)
+{
+    int i;
+
+    for(i=0;i<rozmiar(lista);i++)
+    {
+        zapisz_bufor(first);
+        first=first->next;
+    }
+
+    return NULL;
+}
+
 
 #endif // STRUKTURA_H_INCLUDED

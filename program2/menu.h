@@ -9,12 +9,22 @@ void zatwierdz(void);
 void funkcja_menu_01()
 {
     wczytaj_z_pliku();
+    printf("odczyt: %d.............",temp->kolormax);
 }
 
 void funkcja_menu_02(element* first, element* newone)
 {
-    /*element* temp=malloc(sizeof(element));
-    temp=(element *)malloc(sizeof(element));*/
+    int i;
+printf("odczyt: %d",temp->kolormax);
+lista=push(lista,temp);
+printf("odczyt: %d",lista->kolormax);
+
+    for(i = 0; i < temp->wys; i++)
+    wyswietl(lista);
+        free(temp->obraz[i]);
+    free(temp->obraz);
+    free(temp);
+getchar();
 }
 
 int menu_glowne()
@@ -71,6 +81,11 @@ int menu_glowne()
     case 1:
     {
         funkcja_menu_01();
+        break;
+    }
+    case 2:
+    {
+        funkcja_menu_02(lista,temp);
         break;
     }
     case 6:

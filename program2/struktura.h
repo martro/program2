@@ -81,7 +81,7 @@ element* tymczas()
 element* wczytaj_z_pliku()
 {
     char nazwa[NAZWA_PLIKU],znak;
-    int inttym,czy_param=1,x=0,y=0, litera_p=0,ilosc_danych=0,error=0,i=0;
+    int inttym,czy_param=1,x=0,y=0, litera_p=0,ilosc_danych=0,error=0;
 
     FILE * pFile;
 
@@ -145,16 +145,15 @@ element* wczytaj_z_pliku()
 
                 if ((znak>='0')&&(znak<='9')&&(temp->szer==0))
                 {
-                 //   fseek(pFile,-1,SEEK_CUR);
+                    fseek(pFile,-2,SEEK_CUR);
                     printf("\nznak: %c\n",znak);
-                    getchar();
-                    getchar();
+             //       getchar();
+             //       getchar();
                     fscanf(pFile,"%d %d",&temp->szer,&temp->wys);
 
-                    printf("\n\n\n\n szer: %d, wys %d",temp->szer,temp->wys);
-                    getchar();
-                    temp->szer=640;
-                    getchar();
+             //       printf("\n\n\n\n szer: %d, wys %d",temp->szer,temp->wys);
+             //       getchar();
+             //      getchar();
 
                     if (fgetc(pFile)!='\n')
                     {
@@ -173,13 +172,13 @@ element* wczytaj_z_pliku()
                     printf("\n szer: %d, wys %d",temp->szer,temp->wys);
                     printf("\n kolorek %d",temp->kolormax);
                     fseek(pFile,-1,SEEK_CUR);
-                  /*  if (fgetc(pFile)!='\n')
-                    {
-                        error=1;
-                        printf("\nBledny naglowek. Zle odczytany kolor maksymalny.");
-                        temp->kolormax=-1;
-                        czy_param=0;
-                    }*/
+                    /*    if (fgetc(pFile)!='\n')
+                         {
+                             error=1;
+                             printf("\nBledny naglowek. Zle odczytany kolor maksymalny.");
+                             temp->kolormax=-1;
+                             czy_param=0;
+                         }*/
                     //fseek(pFile,-1,SEEK_CUR);
                 }
             }
@@ -191,16 +190,17 @@ element* wczytaj_z_pliku()
         if ((czy_param)&&(error==0))
         {
             printf("\nProsze czekac. Trwa pobieranie pliku.\n");
+       //     getchar();
             pamiec_obraz(temp);
             do //pobieranie zawartosci pliku
             {
                 do
                 {
                     znak=fgetc(pFile);
-                  //  printf ("\n %d", znak);
-                  //  getchar();
+             //        printf(".%d.",znak);
+               //     getchar();
                 }
-                while ((((znak)<'0')||(znak>'9'))&&(znak!=EOF));
+                while ( ((znak==10) || (znak=='\r') || (znak==' '))&&(znak!=EOF));
                 fseek(pFile,-1,SEEK_CUR);
 
 
@@ -213,9 +213,8 @@ element* wczytaj_z_pliku()
                             ilosc_danych++;
                         }
                         temp->obraz[y][x]=inttym;
-                        printf(" [%d][%d]=%d=%d\n",y,x,temp->obraz[y][x],inttym);
-                        //getchar();
-                     //   getchar();
+                //printf(" [%d][%d]=%d=%d\n",y,x,temp->obraz[y][x],inttym);
+               //         getchar();
                         x++;
                         if (x==temp->szer)
                         {
@@ -262,10 +261,6 @@ element* wczytaj_z_pliku()
        else
            printf("\nW buforze znajduje sie juz sygnal. Aby wczytac nowy usun poprzedni.\n");*/
 
-    for(i = 0; i < temp->wys; i++)
-        free(temp->obraz[i]);
-    free(temp->obraz);
-    free(temp);
     return temp;
 }
 
@@ -280,7 +275,7 @@ void wyswietl(element *first)
     {
         do
         {
-//            printf("[%d]->",first->dane);
+            printf("[%d]->",first->kolormax);
             first=first->next;
         }
         while(first!=NULL);

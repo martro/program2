@@ -8,39 +8,19 @@ void zatwierdz(void);
 
 void funkcja_menu_01()
 {
+    temp=wczytaj_z_pliku();
+ //   lista=push(lista,temp);
+    wyswietl(lista);
     wczytaj_z_pliku();
-<<<<<<< HEAD
-<<<<<<< HEAD
-    printf("odczyt: %d.............",temp->kolormax);
-=======
->>>>>>> 4b7d866aeb5098e99f2325fa4cfcd2c7f3f0061f
-=======
->>>>>>> 4b7d866aeb5098e99f2325fa4cfcd2c7f3f0061f
+ //   lista=push(lista,temp);
+    wyswietl(lista);
+    clear(lista);
+
 }
 
 void funkcja_menu_02(element* first, element* newone)
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-    int i;
-printf("odczyt: %d",temp->kolormax);
-lista=push(lista,temp);
-printf("odczyt: %d",lista->kolormax);
-
-    for(i = 0; i < temp->wys; i++)
-    wyswietl(lista);
-        free(temp->obraz[i]);
-    free(temp->obraz);
-    free(temp);
-getchar();
-=======
-    /*element* temp=malloc(sizeof(element));
-    temp=(element *)malloc(sizeof(element));*/
->>>>>>> 4b7d866aeb5098e99f2325fa4cfcd2c7f3f0061f
-=======
-    /*element* temp=malloc(sizeof(element));
-    temp=(element *)malloc(sizeof(element));*/
->>>>>>> 4b7d866aeb5098e99f2325fa4cfcd2c7f3f0061f
+    wyswietl(first);
 }
 
 int menu_glowne()
@@ -97,17 +77,6 @@ int menu_glowne()
     case 1:
     {
         funkcja_menu_01();
-<<<<<<< HEAD
-<<<<<<< HEAD
-        break;
-    }
-    case 2:
-    {
-        funkcja_menu_02(lista,temp);
-=======
->>>>>>> 4b7d866aeb5098e99f2325fa4cfcd2c7f3f0061f
-=======
->>>>>>> 4b7d866aeb5098e99f2325fa4cfcd2c7f3f0061f
         break;
     }
     case 6:

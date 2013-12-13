@@ -84,6 +84,7 @@ element* tymczas()
     temp->wys=0;
     temp->tryb=0;
     temp->obraz=0;
+    temp->nazwa_pliku=0;
     return temp;
 }
 
@@ -243,17 +244,15 @@ element* wczytaj_z_pliku()
             printf("\nKolormax:  %d\n",temp->kolormax);
             temp->next=0;
             temp->nazwa_pliku=nazwa;
-            printf("nazwa pliku: %s",temp->nazwa_pliku);
-            lista=push(lista,temp);
+            nazwa="\n";
+            printf("\nnazwa pliku: %s",temp->nazwa_pliku);
         }
         fclose (pFile);
 
     }
     else
         printf("\nBLAD ODCZYTU PLIKU. (niepoprawnie wpisana nazwa lub plik nie istnieje)\n");
-    /*   }
-       else
-           printf("\nW buforze znajduje sie juz sygnal. Aby wczytac nowy usun poprzedni.\n");*/
+
     free(nazwa);
     return temp;
 }
@@ -268,11 +267,12 @@ void wyswietl(element *first)
 
     else
     {
-        printf("Nr\tszer.\n");
+        printf("Nr\tnazwa\n");
+        printf("nazwa pliku: %s",lista->nazwa_pliku);
         do
         {
             i++;
-            printf("%d\t%d\n",i,first->szer);
+            printf("%d\t%s\n",i,first->nazwa_pliku);
             first=first->next;
         }
         while(first!=NULL);

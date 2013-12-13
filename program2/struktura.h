@@ -252,6 +252,7 @@ element* wczytaj_z_pliku()
 
 void wyswietl(element *first)
 {
+    int i=0;
     if (first==NULL)
     {
         printf("Lista jest pusta.");
@@ -259,11 +260,12 @@ void wyswietl(element *first)
 
     else
     {
+        printf("Nr\tszer.\n");
         do
         {
-           printf("[%d]->",first->szer);
+            i++;
+            printf("%d\t%d\n",i,first->szer);
             first=first->next;
-        getchar();
         }
         while(first!=NULL);
         printf("NULL");

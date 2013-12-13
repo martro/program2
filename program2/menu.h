@@ -2,6 +2,8 @@
 #define MENU_H_INCLUDED
 
 void funkcja_menu_01();
+void funkcja_menu_02();
+void funkcja_menu_05();
 int menu_glowne();
 void podkreslenie(void);
 void zatwierdz(void);
@@ -9,18 +11,16 @@ void zatwierdz(void);
 void funkcja_menu_01()
 {
     temp=wczytaj_z_pliku();
- //   lista=push(lista,temp);
-    wyswietl(lista);
-    wczytaj_z_pliku();
- //   lista=push(lista,temp);
-    wyswietl(lista);
-    clear(lista);
-
 }
 
-void funkcja_menu_02(element* first, element* newone)
+void funkcja_menu_02()
 {
-    wyswietl(first);
+    wyswietl(lista);
+}
+
+void funkcja_menu_05()
+{
+    lista=clear(lista);
 }
 
 int menu_glowne()
@@ -77,6 +77,16 @@ int menu_glowne()
     case 1:
     {
         funkcja_menu_01();
+        break;
+    }
+    case 2:
+    {
+        funkcja_menu_02();
+        break;
+    }
+    case 5:
+    {
+        funkcja_menu_05();
         break;
     }
     case 6:

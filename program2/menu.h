@@ -22,7 +22,16 @@ void funkcja_menu_02()
 
 void funkcja_menu_43()
 {
-    odbicie_prawej(lista);
+    char wybor;
+    printf("\nJak odbic?:"
+           "\n1 - w poziomie"
+           "\n2 - w pionie\n");
+    while((getchar()) != '\n');
+    wybor=getchar();
+    if (wybor=='1')
+        lustro_poziom(lista);
+    if (wybor=='2')
+        lustro_pion(lista);
 }
 
 void funkcja_menu_05()
@@ -61,7 +70,7 @@ int menu_glowne()
         if(scanf("%d",&wybor))   //jezeli odczytane jest liczba
         {
             if ((wybor==1)||(wybor==2)||(wybor==31)||(wybor==32)||(wybor==33)||
-                (wybor==41)||(wybor==42)||(wybor==43)||(wybor==5)||(wybor==6))
+                    (wybor==41)||(wybor==42)||(wybor==43)||(wybor==5)||(wybor==6))
             {
                 printf("Poprawnie odczytano. Twoj wybor to: %d\n",wybor);
                 blad_odczytu=0;
@@ -94,7 +103,7 @@ int menu_glowne()
         funkcja_menu_02();
         break;
     }
-        case 43:
+    case 43:
     {
         funkcja_menu_43();
         break;

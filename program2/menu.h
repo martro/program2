@@ -20,6 +20,10 @@ void funkcja_menu_02()
 {
     wyswietl(lista);
 }
+void funkcja_menu_31()
+{
+    sobelx(lista);
+}
 void funkcja_menu_42()
 {
     char wybor;
@@ -124,6 +128,11 @@ int menu_glowne()
     case 2:
     {
         funkcja_menu_02();
+        break;
+    }
+    case 31:
+    {
+        funkcja_menu_31();
         break;
     }
     case 42:

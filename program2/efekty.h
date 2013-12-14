@@ -7,6 +7,7 @@ void obrot_180(element* first);
 void obrot_lewo(element* first);
 void obrot_prawo(element* first);
 void odbicie_prawej(element* first);
+void sobelx(element* first);
 
 void lustro_poziom(element* first)
 {
@@ -182,6 +183,73 @@ void odbicie_prawej(element* first)
 
     getchar();
     getchar();
+}
+
+void sobelx(element* first)
+{
+    char wybor;
+    element* temp;
+    int a,b,c,d,e,f,g,h,i,k,l;
+    element* zrodlo;
+
+    wyswietl(lista);
+    printf("\nSobel x. Ktory plik?\n");
+    while((getchar()) != '\n');
+    wybor=getchar();
+    wybor=wybor-48;
+
+    printf("wybor: %d",wybor);
+
+    zrodlo=pozycja(wybor,lista);
+
+    /*  printf("a=%d",a);
+      getchar();
+      getchar();*/
+
+
+    temp=tymczas(lista);
+    temp->szer=zrodlo->szer-2;
+    temp->wys=zrodlo->wys-2;
+    pamiec_strukt(temp);
+
+  //   printf("a=%d",zrodlo->obraz[-1][-1]);
+      getchar();
+      getchar();
+
+    for(k=1; k<temp->wys-1; k++)
+    {
+        for(l=1; l<temp->szer-1; l++)
+        {
+            printf("ok [%d][%d]\n",k,l);
+            a=zrodlo->obraz[k-1][l-1];
+            b=zrodlo->obraz[k-1][l  ];
+            c=zrodlo->obraz[k-1][l+1];
+          //  d=zrodlo->obraz[k  ][l-1];
+         //   e=zrodlo->obraz[k  ][l  ];
+        //    f=zrodlo->obraz[k  ][l+1];
+            g=zrodlo->obraz[k+1][l-1];
+            h=zrodlo->obraz[k+1][l  ];
+            i=zrodlo->obraz[k+1][l+1];
+
+            temp->obraz[k-1][l-1]=a-g;
+            temp->obraz[k-1][l  ]=b-h;
+            temp->obraz[k-1][l+1]=c-i;
+            temp->obraz[k  ][l-1]=2*a-2*g;
+            temp->obraz[k  ][l  ]=2*b-2*h;
+            temp->obraz[k  ][l+1]=2*c-2*i;
+            temp->obraz[k+1][l-1]=a-g;
+            temp->obraz[k+1][l  ]=b-h;
+            temp->obraz[k+1][l+1]=c-i;
+        }
+    }
+
+    printf("dotad jest ok\n");
+    getchar();
+    getchar();
+    czysc_obraz(zrodlo);
+    zrodlo->obraz=temp->obraz;
+    zrodlo->szer=temp->szer;
+    zrodlo->wys=temp->wys;
 
 }
 

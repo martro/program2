@@ -3,6 +3,7 @@
 
 void funkcja_menu_01();
 void funkcja_menu_02();
+void funkcja_menu_42();
 void funkcja_menu_43();
 void funkcja_menu_05();
 int menu_glowne();
@@ -18,6 +19,10 @@ void funkcja_menu_01()
 void funkcja_menu_02()
 {
     wyswietl(lista);
+}
+void funkcja_menu_42()
+{
+    obrot_prawo(lista);
 }
 
 void funkcja_menu_43()
@@ -101,6 +106,11 @@ int menu_glowne()
     case 2:
     {
         funkcja_menu_02();
+        break;
+    }
+    case 42:
+    {
+        funkcja_menu_42();
         break;
     }
     case 43:

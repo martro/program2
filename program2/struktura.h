@@ -18,6 +18,7 @@ element *lista=NULL;
 element *temp;
 
 element* clear(element *first);
+element* czysc_obraz(element* bierzacy);
 element* tymczas();
 int pamiec_strukt(element* temp);
 void pomin_komentarz(char znak, FILE *pFile);
@@ -44,6 +45,16 @@ element* clear(element *first)
     free(first);
     return NULL;
 }
+
+element* czysc_obraz(element* bierzacy)
+{
+    int i;
+    for(i = 0; i < bierzacy->wys; i++)
+        free(bierzacy->obraz[i]);
+    free(bierzacy->obraz);
+    return NULL;
+}
+
 
 int pamiec_strukt(element* temp)
 {
@@ -298,16 +309,21 @@ void wyswietl(element *first)
 
     else
     {
-        printf("Nr\tnazwa\n");
-        printf("________________\n");
+        printf("Nr\tmodyf\tnazwa\n");
+        printf("-------------------------\n");
         do
         {
             i++;
-            printf("%d\t%s\n",i,first->nazwa_pliku);
+            printf("%d\t",i);
+                if (first->czy_zmieniony==0)
+                    printf("NIE");
+                if (first->czy_zmieniony==1)
+                    printf("TAK");
+            printf("\t%s\n",first->nazwa_pliku);
             first=first->next;
         }
         while(first!=NULL);
-        printf("NULL");
+        printf("-------------------------\n");
     }
 }
 void zapisz_bufor(element* temp)

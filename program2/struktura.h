@@ -80,6 +80,7 @@ element* pozycja(int poz, element* first)
     int maks,i;
     maks=rozmiar(first)-1;
 
+    poz--;
 
     if (poz>maks)
     {
@@ -92,7 +93,7 @@ element* pozycja(int poz, element* first)
         return NULL;
     }
 
-    for (i=0;i<poz; i++)
+    for (i=0; i<poz; i++)
         first = first->next;
 
     printf("\n\nNazwa pliku: %s\n", first->nazwa_pliku);
@@ -315,10 +316,10 @@ void wyswietl(element *first)
         {
             i++;
             printf("%d\t",i);
-                if (first->czy_zmieniony==0)
-                    printf("NIE");
-                if (first->czy_zmieniony==1)
-                    printf("TAK");
+            if (first->czy_zmieniony==0)
+                printf("NIE");
+            if (first->czy_zmieniony==1)
+                printf("TAK");
             printf("\t%s\n",first->nazwa_pliku);
             first=first->next;
         }

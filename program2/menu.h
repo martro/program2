@@ -22,7 +22,25 @@ void funkcja_menu_02()
 }
 void funkcja_menu_42()
 {
-    obrot_prawo(lista);
+    char wybor;
+    printf("\nJak obrocic?"
+           "\n1 - w lewo"
+           "\n2 - w prawo"
+           "\n1 - pol obrot\n");
+    while((getchar()) != '\n');
+    wybor=getchar();
+
+    if (wybor=='1')
+    {
+        obrot_lewo(lista);
+    }
+    if (wybor=='2')
+    {
+        obrot_prawo(lista);
+    }
+    if (wybor=='3')
+    {
+    }
 }
 
 void funkcja_menu_43()

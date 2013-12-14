@@ -66,7 +66,11 @@ void pomin_komentarz(char znak,FILE *pFile )
 
 element* pozycja(int poz, element* first)
 {
-    if (poz>=rozmiar(first))
+    int maks,i;
+    maks=rozmiar(first)-1;
+
+
+    if (poz>maks)
     {
         printf("Podana liczba jest za duza.\n");
         return NULL;
@@ -76,14 +80,13 @@ element* pozycja(int poz, element* first)
         printf("Blad. Pozycja musi byc dodatnia.\n");
         return NULL;
     }
-    do
-    {
-        first = first->next;
-        poz--;
-    }
-    while(poz>0);
 
-    printf("Nazwa pliku: %s\n", first->nazwa_pliku);
+    for (i=0;i<poz; i++)
+        first = first->next;
+
+    printf("\n\nNazwa pliku: %s\n", first->nazwa_pliku);
+
+
     return first;
 }
 

@@ -1,15 +1,18 @@
 # depslib dependency file v1.0
-1386867045 source:c:\users\martro\documents\github\program2\program2\main.c
+1387029979 source:c:\users\martro\documents\github\program2\program2\main.c
 	<stdio.h>
 	<stdlib.h>
 	"struktura.h"
+	"efekty.h"
 	"menu.h"
 
 1386867045 D
 
-1386978222 c:\users\martro\documents\github\program2\program2\struktura.h
+1387032804 c:\users\martro\documents\github\program2\program2\struktura.h
 
-1386977159 c:\users\martro\documents\github\program2\program2\menu.h
+1387035849 c:\users\martro\documents\github\program2\program2\menu.h
 
 1386866991 d866aeb5098e99f2325fa4cfcd2c7f3f0061f
+
+1387035504 c:\users\martro\documents\github\program2\program2\efekty.h
 

@@ -3,6 +3,7 @@
 
 void funkcja_menu_01();
 void funkcja_menu_02();
+void funkcja_menu_43();
 void funkcja_menu_05();
 int menu_glowne();
 void podkreslenie(void);
@@ -16,11 +17,12 @@ void funkcja_menu_01()
 
 void funkcja_menu_02()
 {
-    pozycja(3,lista);
-    printf("\n\n");
-    getchar();
-    getchar();
     wyswietl(lista);
+}
+
+void funkcja_menu_43()
+{
+    odbicie_prawej(lista);
 }
 
 void funkcja_menu_05()
@@ -49,6 +51,7 @@ int menu_glowne()
                "\n"
                "41 - ZMIANA ROZMIARU OBRAZU\n"
                "42 - ROTACJA OBRAZU\n"
+               "43 - LUSTRO"
                "\n"
                " 5 - ZAPISZ\n"
                "\n"
@@ -57,7 +60,8 @@ int menu_glowne()
                "WYBOR: ");
         if(scanf("%d",&wybor))   //jezeli odczytane jest liczba
         {
-            if ((wybor==1)|(wybor==2)|(wybor==31)|(wybor==32)|(wybor==33)|(wybor==41)|(wybor==42)|(wybor==5)|(wybor==6))
+            if ((wybor==1)||(wybor==2)||(wybor==31)||(wybor==32)||(wybor==33)||
+                (wybor==41)||(wybor==42)||(wybor==43)||(wybor==5)||(wybor==6))
             {
                 printf("Poprawnie odczytano. Twoj wybor to: %d\n",wybor);
                 blad_odczytu=0;
@@ -88,6 +92,11 @@ int menu_glowne()
     case 2:
     {
         funkcja_menu_02();
+        break;
+    }
+        case 43:
+    {
+        funkcja_menu_43();
         break;
     }
     case 5:

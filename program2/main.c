@@ -5,6 +5,7 @@
 *Marcin Trojan 205608 MTR W-10
     */
 #include <stdio.h>
+#include <math.h>
 #include <stdlib.h>
 #include "struktura.h"
 #include "efekty.h"
@@ -15,7 +16,6 @@
 int main()
 {
     int dzialaj;
-
     printf("Laboratorium Programowanie w C\n"
            "Program generujacy sygnaly\n"
            "Prowadzacy: mgr inz. Mariusz Ostrowski\n"

@@ -7,7 +7,11 @@ void obrot_180(element* first);
 void obrot_lewo(element* first);
 void obrot_prawo(element* first);
 void odbicie_prawej(element* first);
+void negatyw(element* first);
 void sobelx(element* first);
+void sobely(element* first);
+void sobelxy(element* first);
+
 
 void lustro_poziom(element* first)
 {
@@ -185,6 +189,31 @@ void odbicie_prawej(element* first)
     getchar();
 }
 
+void negatyw(element* first)
+{
+    char wybor;
+    int i,j;
+    element* zrodlo;
+
+
+    wyswietl(lista);
+    printf("\nNegatyw ktorego obrazu?\n");
+    while((getchar()) != '\n');
+    wybor=getchar();
+    wybor=wybor-48;
+
+    printf("wybor: %d",wybor);
+
+    zrodlo=pozycja(wybor,lista);
+
+
+    for(j=0; j<zrodlo->wys; j++)
+        for(i=0; i<zrodlo->szer; i++)
+        {
+            zrodlo->obraz[j][i]=zrodlo->kolormax-zrodlo->obraz[j][i];
+        }
+}
+
 void sobelx(element* first)
 {
     char wybor;
@@ -253,5 +282,159 @@ void sobelx(element* first)
 
 }
 
+void sobely(element* first)
+{
+    char wybor;
+    element* temp;
+    int a,b,c,d,e,f,g,h,i,k,l;
+    element* zrodlo;
+
+    wyswietl(lista);
+    printf("\nSobel x. Ktory plik?\n");
+    while((getchar()) != '\n');
+    wybor=getchar();
+    wybor=wybor-48;
+
+    printf("wybor: %d",wybor);
+
+    zrodlo=pozycja(wybor,lista);
+
+    /*  printf("a=%d",a);
+      getchar();
+      getchar();*/
+
+
+    temp=tymczas(lista);
+    temp->szer=zrodlo->szer-2;
+    temp->wys=zrodlo->wys-2;
+    pamiec_strukt(temp);
+
+  //   printf("a=%d",zrodlo->obraz[-1][-1]);
+      getchar();
+      getchar();
+
+    for(k=1; k<temp->wys-1; k++)
+    {
+        for(l=1; l<temp->szer-1; l++)
+        {
+            printf("ok [%d][%d]\n",k,l);
+            a=zrodlo->obraz[k-1][l-1];
+            b=zrodlo->obraz[k-1][l  ];
+            c=zrodlo->obraz[k-1][l+1];
+            d=zrodlo->obraz[k  ][l-1];
+            e=zrodlo->obraz[k  ][l  ];
+            f=zrodlo->obraz[k  ][l+1];
+            g=zrodlo->obraz[k+1][l-1];
+            h=zrodlo->obraz[k+1][l  ];
+            i=zrodlo->obraz[k+1][l+1];
+
+            temp->obraz[k-1][l-1]=a+2*d+g;
+            temp->obraz[k-1][l  ]=b+2*e+h;
+            temp->obraz[k-1][l+1]=c+2*f+i;
+            temp->obraz[k  ][l-1]=0;
+            temp->obraz[k  ][l  ]=0;
+            temp->obraz[k  ][l+1]=0;
+            temp->obraz[k+1][l-1]=-a-2*d-g;
+            temp->obraz[k+1][l  ]=-b-2*e-h;
+            temp->obraz[k+1][l+1]=-c-2*f-i;
+        }
+    }
+
+    printf("dotad jest ok\n");
+    getchar();
+    getchar();
+    czysc_obraz(zrodlo);
+    zrodlo->obraz=temp->obraz;
+    zrodlo->szer=temp->szer;
+    zrodlo->wys=temp->wys;
+
+}
+
+void sobelxy(element* first)
+{
+    double rzecz;
+    int calk;
+    char wybor;
+    element* temp;
+    int a,b,c,d,e,f,g,h,i,k,l;
+    element* zrodlo;
+
+    wyswietl(lista);
+    printf("\nSobel x. Ktory plik?\n");
+    while((getchar()) != '\n');
+    wybor=getchar();
+    wybor=wybor-48;
+
+    printf("wybor: %d",wybor);
+
+    zrodlo=pozycja(wybor,lista);
+
+    /*  printf("a=%d",a);
+      getchar();
+      getchar();*/
+
+
+    temp=tymczas(lista);
+    temp->szer=zrodlo->szer-2;
+    temp->wys=zrodlo->wys-2;
+    pamiec_strukt(temp);
+
+  //   printf("a=%d",zrodlo->obraz[-1][-1]);
+      getchar();
+      getchar();
+
+    for(k=1; k<temp->wys-1; k++)
+    {
+        for(l=1; l<temp->szer-1; l++)
+        {
+            printf("ok [%d][%d]\n",k,l);
+            a=zrodlo->obraz[k-1][l-1];
+            b=zrodlo->obraz[k-1][l  ];
+            c=zrodlo->obraz[k-1][l+1];
+            d=zrodlo->obraz[k  ][l-1];
+            e=zrodlo->obraz[k  ][l  ];
+            f=zrodlo->obraz[k  ][l+1];
+            g=zrodlo->obraz[k+1][l-1];
+            h=zrodlo->obraz[k+1][l  ];
+            i=zrodlo->obraz[k+1][l+1];
+
+            rzecz=sqrt(pow((a-g),2)     +pow((a+2*d+g),2)); calk=rzecz;
+            temp->obraz[k-1][l-1]=calk;
+
+            rzecz=sqrt(pow((b-h),2)     +pow((b+2*e+h),2)); calk=rzecz;
+            temp->obraz[k-1][l  ]=calk;
+
+            rzecz=sqrt(pow((c-i),2)     +pow((c+2*f+i),2)); calk=rzecz;
+            temp->obraz[k-1][l+1]=calk;
+
+            rzecz=sqrt(pow(2*a-2*g,2)); calk=rzecz;
+            temp->obraz[k  ][l-1]=calk;
+
+            rzecz=sqrt(pow(2*b-2*h,2)); calk=rzecz;
+            temp->obraz[k  ][l  ]=calk;
+
+            rzecz=sqrt(pow((2*c-2*i),2)); calk=rzecz;
+            temp->obraz[k  ][l+1]=calk;
+
+            rzecz=sqrt(pow((a-g),2)     +pow((-a-2*d-g),2)); calk=rzecz;
+            temp->obraz[k+1][l-1]=calk;
+
+            rzecz=sqrt(pow((b-h),2)     +pow((-b-2*e-h),2)); calk=rzecz;
+            temp->obraz[k+1][l  ]=calk;
+
+            rzecz=sqrt(pow((c-i),2)     +pow((-c-2*f-i),2)); calk=rzecz;
+            temp->obraz[k+1][l+1]=calk;
+        }
+    }
+
+    printf("dotad jest ok\n");
+    getchar();
+    getchar();
+    czysc_obraz(zrodlo);
+    zrodlo->obraz=temp->obraz;
+    zrodlo->szer=temp->szer;
+    zrodlo->wys=temp->wys;
+
+}
 
 #endif // EFEKTY_H_INCLUDED

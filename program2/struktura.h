@@ -379,6 +379,7 @@ element* zapisz_liste(element* first)
 
     for(i=0; i<rozmiar(lista); i++)
     {
+        if (first->czy_zmieniony)
         zapisz_bufor(first);
         first=first->next;
     }

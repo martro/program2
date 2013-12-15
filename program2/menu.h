@@ -3,6 +3,9 @@
 
 void funkcja_menu_01();
 void funkcja_menu_02();
+void funkcja_menu_32();
+void funkcja_menu_33();
+void funkcja_menu_34();
 void funkcja_menu_42();
 void funkcja_menu_43();
 void funkcja_menu_44();
@@ -24,6 +27,18 @@ void funkcja_menu_02()
 void funkcja_menu_31()
 {
     sobelxy(lista);
+}
+void funkcja_menu_32()
+{
+    kontrast(lista);
+}
+void funkcja_menu_33()
+{
+    krawedz(lista);
+}
+void funkcja_menu_34()
+{
+    zmniejsz_ostrosc(lista);
 }
 void funkcja_menu_42()
 {
@@ -88,8 +103,9 @@ int menu_glowne()
                " 2 - WYSWIETL OBRAZY\n"
                "\n"
                "31 - SOBEL\n"
-               "32 - FILTR DRUGI\n"
-               "33 - FILTR TRZECI\n"
+               "32 - KONTRAST\n"
+               "33 - KRAWEDZ\n"
+               "34 - ZMNIEJSZ OSTROSC"
                "\n"
                "41 - ZMIANA ROZMIARU OBRAZU\n"
                "42 - ROTACJA OBRAZU\n"
@@ -103,7 +119,7 @@ int menu_glowne()
                "WYBOR: ");
         if(scanf("%d",&wybor))   //jezeli odczytane jest liczba
         {
-            if ((wybor==1)||(wybor==2)||(wybor==31)||(wybor==32)||(wybor==33)||
+            if ((wybor==1)||(wybor==2)||(wybor==31)||(wybor==32)||(wybor==33)||(wybor==34)||
                     (wybor==41)||(wybor==42)||(wybor==43)||(wybor==44)||(wybor==5)||(wybor==6))
             {
                 printf("Poprawnie odczytano. Twoj wybor to: %d\n",wybor);
@@ -140,6 +156,21 @@ int menu_glowne()
     case 31:
     {
         funkcja_menu_31();
+        break;
+    }
+    case 32:
+    {
+        funkcja_menu_32();
+        break;
+    }
+    case 33:
+    {
+        funkcja_menu_33();
+        break;
+    }
+    case 34:
+    {
+        funkcja_menu_34();
         break;
     }
     case 42:

@@ -71,7 +71,7 @@ void krawedz(element* first)
     char wybor;
     element* temp;
     int i,j;
-    int wspolczynnik=100;
+    int wspolczynnik=150;
     element* zrodlo;
 
     wyswietl(lista);
@@ -114,16 +114,18 @@ void krawedz(element* first)
     {
         for(i=0; i<temp->szer-1; i++)
         {
-            if (zrodlo->obraz[j][i]==255)
+            if (zrodlo->obraz[j][i]==zrodlo->kolormax)
             {
                 if(zrodlo->obraz[j][i+1]==0)
                     temp->obraz[j][i]=0;
             }
-            else if(zrodlo->obraz[j][i]==0)
+           /* else if(zrodlo->obraz[j][i]==0)
             {
                 if(zrodlo->obraz[j][i+1]==0)
-                    temp->obraz[j][i]=255;
-            }
+                {
+                    temp->obraz[j][i]=zrodlo->kolormax;
+                }
+            }*/
         }
     }
 
@@ -132,16 +134,16 @@ void krawedz(element* first)
     {
         for(temp->szer-1; i>0; i--)
         {
-            if (zrodlo->obraz[j][i]==255)
+            if (zrodlo->obraz[j][i]==zrodlo->kolormax)
             {
                 if(zrodlo->obraz[j][i-1]==0)
                     temp->obraz[j][i]=0;
             }
-            else if(zrodlo->obraz[j][i]==0)
+          /*  else if(zrodlo->obraz[j][i]==0)
             {
                 if(zrodlo->obraz[j][i-1]==0)
-                    temp->obraz[j][i]=255;
-            }
+                    temp->obraz[j][i]=zrodlo->kolormax;
+            }*/
         }
     }
 
@@ -149,16 +151,16 @@ void krawedz(element* first)
     {
         for(i=0; i<temp->szer-1; i++)
         {
-            if (zrodlo->obraz[j][i]==255)
+            if (zrodlo->obraz[j][i]==zrodlo->kolormax)
             {
                 if(zrodlo->obraz[j+1][i]==0)
                     temp->obraz[j][i]=0;
             }
-            else if(zrodlo->obraz[j][i]==0)
+          /*  else if(zrodlo->obraz[j][i]==0)
             {
                 if(zrodlo->obraz[j+1][i]==0)
-                    temp->obraz[j][i]=255;
-            }
+                    temp->obraz[j][i]=zrodlo->kolormax;
+            }*/
         }
     }
 
@@ -166,16 +168,16 @@ void krawedz(element* first)
     {
         for(i=0; i<temp->szer-1; i++)
         {
-            if (zrodlo->obraz[j][i]==255)
+            if (zrodlo->obraz[j][i]==zrodlo->kolormax)
             {
                 if(zrodlo->obraz[j-1][i]==0)
                     temp->obraz[j][i]=0;
             }
-            else if(zrodlo->obraz[j][i]==0)
+          /*  else if(zrodlo->obraz[j][i]==0)
             {
                 if(zrodlo->obraz[j-1][i]==0)
-                    temp->obraz[j][i]=255;
-            }
+                    temp->obraz[j][i]=zrodlo->kolormax;
+            }*/
         }
     }
 

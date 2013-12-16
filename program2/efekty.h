@@ -71,7 +71,7 @@ void krawedz(element* first)
     char wybor;
     element* temp;
     int i,j;
-    int wspolczynnik=150;
+    int wspolczynnik=150,warunek;
     element* zrodlo;
 
     wyswietl(lista);
@@ -110,80 +110,27 @@ void krawedz(element* first)
     }
 
 
-    for(j=0; j<temp->wys; j++) //w prawo
+    for(j=1; j<temp->wys-1; j++) //w prawo
     {
-        for(i=0; i<temp->szer-1; i++)
+        for(i=1; i<temp->szer-1; i++)
         {
-            if (zrodlo->obraz[j][i]==zrodlo->kolormax)
-            {
-                if(zrodlo->obraz[j][i+1]==0)
-                    temp->obraz[j][i]=0;
-            }
-           /* else if(zrodlo->obraz[j][i]==0)
-            {
-                if(zrodlo->obraz[j][i+1]==0)
-                {
-                    temp->obraz[j][i]=zrodlo->kolormax;
-                }
-            }*/
+            warunek=0;
+            if (zrodlo->obraz[j][i]!=zrodlo->obraz[j][i+1])
+                warunek=1;
+            if (zrodlo->obraz[j][i]!=zrodlo->obraz[j][i-1])
+                warunek=1;
+            if (zrodlo->obraz[j][i]!=zrodlo->obraz[j+1][i])
+                warunek=1;
+            if (zrodlo->obraz[j][i]!=zrodlo->obraz[j-1][i])
+                warunek=1;
+
+            if (warunek==1)
+                temp->obraz[j][i]=0;
+            if (warunek==0)
+                temp->obraz[j][i]=zrodlo->kolormax;
         }
     }
 
-
-    for(j=0; j<temp->wys; j++) //w lewo
-    {
-        for(temp->szer-1; i>0; i--)
-        {
-            if (zrodlo->obraz[j][i]==zrodlo->kolormax)
-            {
-                if(zrodlo->obraz[j][i-1]==0)
-                    temp->obraz[j][i]=0;
-            }
-          /*  else if(zrodlo->obraz[j][i]==0)
-            {
-                if(zrodlo->obraz[j][i-1]==0)
-                    temp->obraz[j][i]=zrodlo->kolormax;
-            }*/
-        }
-    }
-
-    for(j=0; j<temp->wys-1; j++) //w dol
-    {
-        for(i=0; i<temp->szer-1; i++)
-        {
-            if (zrodlo->obraz[j][i]==zrodlo->kolormax)
-            {
-                if(zrodlo->obraz[j+1][i]==0)
-                    temp->obraz[j][i]=0;
-            }
-          /*  else if(zrodlo->obraz[j][i]==0)
-            {
-                if(zrodlo->obraz[j+1][i]==0)
-                    temp->obraz[j][i]=zrodlo->kolormax;
-            }*/
-        }
-    }
-
-    for(temp->wys-1; j>0; j--) //w gore
-    {
-        for(i=0; i<temp->szer-1; i++)
-        {
-            if (zrodlo->obraz[j][i]==zrodlo->kolormax)
-            {
-                if(zrodlo->obraz[j-1][i]==0)
-                    temp->obraz[j][i]=0;
-            }
-          /*  else if(zrodlo->obraz[j][i]==0)
-            {
-                if(zrodlo->obraz[j-1][i]==0)
-                    temp->obraz[j][i]=zrodlo->kolormax;
-            }*/
-        }
-    }
-
-    printf("dotad jest ok\n");
-    getchar();
-    getchar();
     czysc_obraz(zrodlo);
     zrodlo->obraz=temp->obraz;
     zrodlo->szer=temp->szer;

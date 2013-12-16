@@ -105,7 +105,7 @@ int menu_glowne()
                "31 - SOBEL\n"
                "32 - KONTRAST\n"
                "33 - KRAWEDZ\n"
-               "34 - ZMNIEJSZ OSTROSC"
+               "34 - ZMNIEJSZ OSTROSC\n"
                "\n"
                "41 - ZMIANA ROZMIARU OBRAZU\n"
                "42 - ROTACJA OBRAZU\n"

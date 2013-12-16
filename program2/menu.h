@@ -17,7 +17,11 @@ void zatwierdz(void);
 void funkcja_menu_01()
 {
     temp=wczytaj_z_pliku();
-    lista=push(lista,temp);
+    if (temp!=NULL)
+    {
+        lista=push(lista,temp);
+        printf("\nsedfsdfsdfsdsdfsdfsdf");
+    }
 }
 
 void funkcja_menu_02()

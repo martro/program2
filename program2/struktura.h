@@ -137,6 +137,7 @@ element* wczytaj_z_pliku()
     char* nazwa;
     int inttym,czy_param=1,x=0,y=0, litera_p=0,ilosc_danych=0,error=0,i=0;
 
+
     nazwa=(char*)malloc(sizeof(char)*NAZWA_PLIKU);
     FILE * pFile;
     element* temp=tymczas();
@@ -262,6 +263,7 @@ element* wczytaj_z_pliku()
             for(i = 0; i < temp->wys; i++)
                 free(temp->obraz[i]);
             free(temp->obraz);
+            return NULL;
         }
         else
         {
@@ -283,7 +285,10 @@ element* wczytaj_z_pliku()
 
     }
     else
+    {
         printf("\nBLAD ODCZYTU PLIKU. (niepoprawnie wpisana nazwa lub plik nie istnieje)\n");
+        return NULL;
+    }
 
     free(nazwa);
     return temp;

@@ -74,11 +74,15 @@ void krawedz(element* first)
     int wspolczynnik=150,warunek;
     element* zrodlo;
 
+    do
+    {
     wyswietl(lista);
     printf("\nKrawedzie. Ktory plik?\n");
     while((getchar()) != '\n');
     wybor=getchar();
     wybor=wybor-48;
+    }
+    while (wybor<0 ||wybor>rozmiar(first));
 
     printf("wybor: %d",wybor);
 
